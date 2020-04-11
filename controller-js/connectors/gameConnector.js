@@ -1,6 +1,6 @@
 const HeartbeatSocket = require('../heartbeatSocket')
 const SimpleObservable = require('../simpleObservable')
-const EVENTS = require('../events')
+const {Types, ButtonPressEvent} = require('../events')
 
 const { DataMessage, HeartbeatConnectionError } = HeartbeatSocket
 
@@ -18,16 +18,16 @@ class GameConnector extends SimpleObservable {
         this.close()
         this.__connection = new HeartbeatSocket(endpoint)
         this.__connection.on(HeartbeatSocket.EVENT_MESSAGE_RECEIVED, this.__handleDataMessage)
-        this.__connection.send(EVENTS.CONNECTION.REQUEST, {
+        this.__connection.send(Types.CONNECTION.REQUEST, {
             code: code
         })
-        this.trigger(EVENTS.CONNECTION.REQUEST)
+        this.trigger(Types.CONNECTION.REQUEST)
     }
 
     async close() {
         if (this.__connection) {
             this.__connection.close()
-            this.trigger(EVENTS.CONNECTION.CLOSE)
+            this.trigger(Types.CONNECTION.CLOSE)
         }
     }
 
@@ -36,7 +36,12 @@ class GameConnector extends SimpleObservable {
      * @private
      */
     __handleDataMessage(dataMessage) {
-        this.trigger(dataMessage.type, dataMessage.payload)
+        switch (dataMessage.type) {
+            case Types.GAME.BUTTON.PRESS:
+                let event = ButtonPressEvent(dataMessage.payload.code)
+                event.timestamp = dataMessage.payload.timestamp
+                return event
+        }
     }
 }
 
