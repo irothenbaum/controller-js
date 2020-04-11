@@ -1,0 +1,15 @@
+{
+  "domain" : "example.com",
+  "protocol": "http | https",
+
+  "ssl": {
+    "key": "/path/to/key.pem",
+    "cert": "/path/to/cert.pem",
+    "chain": "/path/to/chain.pem"
+  },
+
+  "static" : {
+    "resource": "//path/to/cdn | /static",
+    "route": "/static"
+  }
+}
