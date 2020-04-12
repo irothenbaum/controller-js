@@ -15,10 +15,11 @@ class ControllerConnector extends SimpleObservable {
     async init(endpoint, code) {
         this.close()
         this.__connection = new HeartbeatSocket(endpoint)
-        this.__connection.send(Types.CONNECTION.REQUEST, {
+        this.__connection.init()
+        this.__connection.send(Types.CONNECTION.INIT, {
             code: code
         })
-        this.trigger(Types.CONNECTION.REQUEST)
+        this.trigger(Types.CONNECTION.INIT)
     }
 
     async close() {

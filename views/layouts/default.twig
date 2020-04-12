@@ -28,10 +28,6 @@
 {% block footer %}{% endblock %}
 
 {% block scripts %}
-    {% if site.environment == "production" %}
-        <!-- Bug tracking, analytics, etc -->
-    {% endif %}
-
     <script type="text/javascript">
         window._STATIC_DIR = "{{ site.static }}";
     </script>

@@ -12,9 +12,9 @@ module.exports = {
         }
     },
     CONNECTION: {
-        DENIED: 'connection:denied',
-        REQUEST: 'connection:request',
-        OPEN: 'connection:open',
+        INIT: 'connection:init',
+        READY: 'connection:ready',
+        WAITING: 'connection:waiting',
         CLOSE: 'connection:close'
     }
 }

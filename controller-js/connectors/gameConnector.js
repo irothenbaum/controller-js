@@ -1,6 +1,6 @@
 const HeartbeatSocket = require('../heartbeatSocket')
 const SimpleObservable = require('../simpleObservable')
-const {Types, ButtonPressEvent} = require('../events')
+const {Types, Event, ButtonPressEvent} = require('../events')
 
 const { DataMessage, HeartbeatConnectionError } = HeartbeatSocket
 
@@ -32,16 +32,25 @@ class GameConnector extends SimpleObservable {
     }
 
     /**
-     * @param {DataMessage} dataMessage
      * @private
+     * @param {DataMessage} dataMessage
      */
     __handleDataMessage(dataMessage) {
+        let event
+
+        // build the correct event object given the type
         switch (dataMessage.type) {
             case Types.GAME.BUTTON.PRESS:
-                let event = ButtonPressEvent(dataMessage.payload.code)
+                event = ButtonPressEvent(dataMessage.payload.code)
                 event.timestamp = dataMessage.payload.timestamp
-                return event
+                break
+
+            default:
+                throw new Error("Unrecognized Event Type")
         }
+
+        // broadcast the event
+        this.trigger(dataMessage.type, event)
     }
 }
 

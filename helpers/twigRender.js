@@ -1,14 +1,18 @@
 const {TwingEnvironment, TwingLoaderFilesystem} = require('twing');
-let loader = new TwingLoaderFilesystem('./views');
+const path = require('path')
+let loader = new TwingLoaderFilesystem(path.join(__dirname, '..', 'views'));
 let twing = new TwingEnvironment(loader);
 
 const TwigRender = function(res, template, params) {
     params = params || {}
-    res.send(twing.render(template + '.twig', {
+    twing.render(template + '.twig', {
         site: {
             static: '/static/'
         },
-        ...params}))
+        ...params
+    })
+        .then(content => res.send(content))
+        .catch(err => console.log(err))
 }
 
 module.exports = TwigRender
