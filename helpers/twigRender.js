@@ -7,7 +7,7 @@ const TwigRender = function(res, template, params) {
     params = params || {}
     twing.render(template + '.twig', {
         site: {
-            static: '/static/'
+            static: '/public/'
         },
         ...params
     })

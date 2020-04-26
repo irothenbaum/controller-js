@@ -1,0 +1,66 @@
+$white : #fff;
+$grey1 : #f0f0f0f0;
+$grey2 : #DFDFDF;
+$grey3 : #c0c0c0;
+$grey4 : #aaa;
+$grey5 : #777;
+$grey6 : #555;
+$grey7 : #404040;
+$grey8 : #272727;
+$grey9 : #101010;
+$black : #000;
+
+$red-lt-1 : #ff3139;
+$red : #b20e0e;
+$red-dk-1 : #721212;
+
+$orange-lt-1: #ffd27f;
+$orange: #ffa603;
+$orange-dk-1: #c37e00;
+
+$green-lt-1 : #7cd97c;
+$green : #2cb22c;
+$green-dk-1 : #127212;
+
+$blue-lt-1: #29c1ff;
+$blue: #0075dc;
+$blue-dk-1: #004dc3;
+
+$trans-red: rgba(178, 14, 14, 0.2);
+$trans-orange: rgba(255, 166, 3, 0.2);
+$trans-blue: rgba(0, 117, 220, 0.2);
+$trans-green: rgba(44, 178, 44, 0.2);
+
+$shadow: rgba(0,0,0,0.2);
+$shadow-dk-1: rgba(0,0,0,0.5);
+$sunbeam: rgba(255,255,255,0.2);
+$sunbeam-lt-1: rgba(255,255,255,0.5);
+
+$borderRadiusSmall: 3px;
+$borderRadius : 8px;
+$borderRadiusLarge : 20px;
+$buttonTransitionTiming : 0.2s;
+
+$fontTiny : 0.675rem;
+$fontSmall : 0.85rem;
+$fontNormal : 1rem;
+$fontLarge : 1.2rem;
+$fontLarger : 1.5rem;
+$fontHuge : 2rem;
+
+$spaceTiny : 0.3rem;
+$spaceSmall : 0.5rem;
+$spaceNormal : 1rem;
+$spaceLarge : 1.4rem;
+$spaceLarger : 2rem;
+$spaceHuge : 3rem;
+
+
+$extraLargeScreen : 1200px;
+$largeScreenLimit : 1199px;
+$largeScreen : 1024px;
+$mediumScreenLimit : 1023px;
+$mediumScreen : 640px;
+$smallScreenLimit : 639px;
+$smallScreen : 384px;
+$extraSmallScreenLimit : 383px;

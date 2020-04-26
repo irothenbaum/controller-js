@@ -1,6 +1,8 @@
 const SocketHelper = require('../helpers/socketHelper')
-const { DataMessage } = require('../controller-js/heartbeatSocket')
-const { Types } = require('../controller-js/events')
+const { DataMessage } = require('../controller-js/src/heartbeatSocket')
+const { Types } = require('../controller-js/src/events')
+const TwigRender = require('../helpers/twigRender')
+const WebpackStats = require('../controller-js/bin/webpack.stats.json')
 
 const CODE_LENGTH = 6
 
@@ -8,6 +10,12 @@ const ROLE_CONTROLLER = 'role-controller'
 const ROLE_GAME = 'role-game'
 
 class GameController {
+    static async getControllerPage(req, res, next) {
+        TwigRender(res, 'controller', {
+            appFile: WebpackStats.chunks.main[0].name
+        })
+    }
+
     // One day we might allow either to initiate the connection, but right now the Game must initiate it
     static async socketGameInit(socket, req) {
         let code

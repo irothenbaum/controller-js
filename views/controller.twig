@@ -1,0 +1,14 @@
+{% extends "layouts/default.twig" %}
+
+{% block content %}
+    <div id="react-app"></div>
+{% endblock %}
+
+{% block jquery %}
+    <!-- No jQuery -->
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ site.static_dir }}js/{{ appFile }}"></script>
+{% endblock %}
