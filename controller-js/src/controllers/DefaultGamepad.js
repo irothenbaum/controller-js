@@ -8,7 +8,7 @@ class DefaultGamepad extends React.Component {
     render() {
         return (
             <div>
-                TEST
+                TEST -- {this.props.connectCode}
             </div>
         )
     }

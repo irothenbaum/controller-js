@@ -17,7 +17,9 @@ router.get('/example', function(req, res, next) {
 
 /* GET example game */
 router.get('/play/:code', function(req, res, next) {
-    TwigRender(res, 'play')
+    TwigRender(res, 'play', {
+        connectCode: req.params.code
+    })
 });
 
 // ---------------------------------------

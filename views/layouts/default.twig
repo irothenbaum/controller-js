@@ -11,7 +11,7 @@
     {%  endblock %}
 
     {% block styles %}
-        <link rel="stylesheet" href="{{ site.static }}css/base.css" />
+        <link rel="stylesheet" href="{{ site.static_dir }}css/base.css" />
     {% endblock %}
 
     {% block jquery %}
@@ -29,7 +29,7 @@
 
 {% block scripts %}
     <script type="text/javascript">
-        window._STATIC_DIR = "{{ site.static }}";
+        window._STATIC_DIR = "{{ site.static_dir }}";
     </script>
 {% endblock %}
 </body>
