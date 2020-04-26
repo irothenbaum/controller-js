@@ -1,5 +1,5 @@
 .idea/
 node_modules/**/*
 auth.json
-public/js/controller/*
 controller-js/bin/webpack.stats.json
+public/js/controller-js/*
