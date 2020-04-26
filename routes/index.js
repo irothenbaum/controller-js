@@ -7,9 +7,20 @@ const router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-    console.log("LANDING PAGE")
     TwigRender(res, 'index')
 });
+
+/* GET example game */
+router.get('/example', function(req, res, next) {
+    TwigRender(res, 'example')
+});
+
+/* GET example game */
+router.get('/play/:code', function(req, res, next) {
+    TwigRender(res, 'play')
+});
+
+// ---------------------------------------
 
 /**
  * WEB SOCKET: game connect

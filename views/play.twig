@@ -1,0 +1,15 @@
+{% extends "layouts/default.twig" %}
+
+{% block content %}
+    <div id="react-app"></div>
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
+    <script crossorigin src="{{ site.static_dir }}js/controller-js/index.js"></script>
+    <script type="text/javascript">
+        window.__CODE = '{{ code|raw }}';
+    </script>
+    <script type="text/javascript" src="{{ site.static_dir }}js/play.js"></script>
+{% endblock %}

@@ -73,7 +73,7 @@ module.exports = (env) => {
                             options: {
                                 sourceMap: false,
                                 sassOptions: {
-                                    includePaths: [path.resolve('./controller-js/sass/')],
+                                    includePaths: [path.resolve('./sass')],
                                 },
                             }
                         }

@@ -1,5 +1,12 @@
 {% extends "layouts/default.twig" %}
 
+{% block scripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ site.static_dir }}js/index.js"></script>
+{% endblock %}
+
 {% block content %}
     <h1>Controller JS</h1>
+    <input type="text" />
+    <button id="go-button">Go</button>
 {% endblock %}

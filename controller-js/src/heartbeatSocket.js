@@ -7,14 +7,6 @@ const QUEUE_CHECK_TIMEOUT = 50
 const OPEN_STATE = 1
 
 class HeartBeatSocket extends Observable {
-    static EVENT_MESSAGE_SENT = 'message-sent' // data message payload
-    static EVENT_MESSAGE_RECEIVED = 'message-received' // data message payload
-    static EVENT_CONNECTION_OPENED = 'connection-opened' // no payload
-    static EVENT_CONNECTION_CLOSED = 'connection-closed' // no payload
-    static EVENT_CONNECTION_ERROR = 'connection-error' // error payload
-
-    static TYPE_HEARTBEAT = 'heartbeat'
-
     /**
      * @param {string} url
      */
@@ -137,14 +129,17 @@ class HeartBeatSocket extends Observable {
     }
 }
 
+HeartBeatSocket.EVENT_MESSAGE_SENT = 'message-sent' // data message payload
+HeartBeatSocket.EVENT_MESSAGE_RECEIVED = 'message-received' // data message payload
+HeartBeatSocket.EVENT_CONNECTION_OPENED = 'connection-opened' // no payload
+HeartBeatSocket.EVENT_CONNECTION_CLOSED = 'connection-closed' // no payload
+HeartBeatSocket.EVENT_CONNECTION_ERROR = 'connection-error' // error payload
+
+HeartBeatSocket.TYPE_HEARTBEAT = 'heartbeat'
+
 // ----------------------------------------------------------------------------------------
 
 class DataMessage {
-    type
-    timestamp_sent
-    timestamp_received
-    payload
-
     /**
      * @param {string} type
      * @param {*} payload

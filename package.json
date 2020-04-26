@@ -4,10 +4,11 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "webpack-refresh": "node node_modules/webpack/bin/webpack.js --config controller-js/webpack.config.js --progress && cp -a controller-js/bin public/js/controller-js"
+    "webpack-refresh": "node node_modules/webpack/bin/webpack.js --config controller-js/webpack.config.js --progress && cp -a controller-js/bin/bundle.js public/js/controller-js/index.js"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
+    "css-loader": "^3.5.3",
     "debug": "~2.6.9",
     "express": "~4.16.1",
     "express-async-handler": "^1.1.4",
@@ -16,6 +17,9 @@
     "http-errors": "^1.6.3",
     "jade": "~1.11.0",
     "morgan": "~1.9.1",
+    "node-sass": "^4.14.0",
+    "sass-loader": "^8.0.2",
+    "style-loader": "^1.2.0",
     "twing": "^4.0.3",
     "uuid": "^7.0.3"
   },
@@ -24,6 +28,7 @@
     "@babel/plugin-proposal-class-properties": "^7.8.3",
     "@babel/preset-react": "^7.9.4",
     "babel-loader": "^8.1.0",
+    "react": "^16.13.1",
     "webpack": "^4.42.1",
     "webpack-bundle-tracker": "^1.0.0-alpha.1",
     "webpack-cli": "^3.3.11"
