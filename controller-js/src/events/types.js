@@ -12,6 +12,7 @@ module.exports = {
         }
     },
     CONNECTION: {
+        HEARTBEAT: 'connection:heartbeat',
         INIT: 'connection:init',
         READY: 'connection:ready',
         WAITING: 'connection:waiting',

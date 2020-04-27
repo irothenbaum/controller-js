@@ -1,6 +1,7 @@
 const createError = require('http-errors')
 const express = require('express')
 const path = require('path')
+const favicon = require('serve-favicon')
 const cookieParser = require('cookie-parser')
 const logger = require('morgan')
 const socketServer = require('./socketServerSingleton')
@@ -39,18 +40,30 @@ if (auth.protocol === 'http') {
 
 socketServer(app, server)
 
-app.set('etag', false)
-
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
-
 app.use(logger('dev'));
+
+app.set('etag', false)
+app.use(function(req, res, next) {
+    // make sure our node environment matches our auth environment
+    req.app.set('env', process.env.NODE_ENV)
+
+    // disable cache
+    res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private')
+
+    return next()
+})
+
+app.use(cookieParser());
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
+
+// configure our favicon
+app.use(favicon(path.join(__dirname, 'public', 'img', 'favicon.ico')))
+
 app.use('/static', express.static(path.join(__dirname, 'public')));
 
+// application routes
 app.use('/', require('./routes/index'));
 
 // catch 404 and forward to error handler

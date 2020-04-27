@@ -13,7 +13,7 @@ module.exports = function(app, server) {
             throw new Error("Cannot initialize singleton")
         }
 
-        // enable Web Sockets for chat
+        // enable Web Sockets for game event propagation
         wsInstance = enableWs(app, server, {
             wsOptions: {
                 maxPayload: 65535

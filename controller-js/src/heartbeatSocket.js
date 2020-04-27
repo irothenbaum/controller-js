@@ -6,15 +6,17 @@ const QUEUE_CHECK_TIMEOUT = 50
 // 1 === WebSocket.OPEN
 const OPEN_STATE = 1
 
-class HeartBeatSocket extends Observable {
+class HeartbeatSocket extends Observable {
     /**
      * @param {string} url
+     * @param {string} heartbeatEventType
      */
-    constructor(url) {
+    constructor(url, heartbeatEventType) {
         super()
         this.send = this.send.bind(this)
 
         this.__missedHeartbeats = 0
+        this.__heartbeatEventType = heartbeatEventType
         this.__queue = []
         this.__socket = new WebSocket(url)
         this.__socket.onopen = this.init.bind(this)
@@ -41,9 +43,9 @@ class HeartBeatSocket extends Observable {
                 if (this.__missedHeartbeats >= 3) {
                     throw new HeartbeatConnectionError("3 missed heartbeats")
                 }
-                this.send(HeartBeatSocket.TYPE_HEARTBEAT)
+                this.send(this.__heartbeatEventType)
             } catch(e) {
-                this.trigger(HeartBeatSocket.EVENT_CONNECTION_ERROR, e)
+                this.trigger(HeartbeatSocket.EVENT_CONNECTION_ERROR, e)
                 this.close();
             }
         }, timeout)
@@ -65,8 +67,14 @@ class HeartBeatSocket extends Observable {
 
     __handleSocketMessage({data}) {
         let dataObj = DataMessage.fromReceived(data)
+
+        // if we received a heartbeat, we reset our missed heartbeat count to 0
+        if (dataObj.type === this.__heartbeatEventType) {
+            this.__missedHeartbeats = 0
+        }
+
         // trigger our internal event handlers
-        this.trigger(HeartBeatSocket.EVENT_MESSAGE_RECEIVED, dataObj)
+        this.trigger(HeartbeatSocket.EVENT_MESSAGE_RECEIVED, dataObj)
     }
 
     /**
@@ -76,7 +84,7 @@ class HeartBeatSocket extends Observable {
     __sendInternal(type, data) {
         let dataMessage = DataMessage.toSend(type, data)
         this.__socket.send(JSON.stringify(dataMessage))
-        this.trigger(HeartBeatSocket.EVENT_MESSAGE_SENT, dataMessage)
+        this.trigger(HeartbeatSocket.EVENT_MESSAGE_SENT, dataMessage)
     }
 
     __startQueue() {
@@ -92,7 +100,7 @@ class HeartBeatSocket extends Observable {
                 delete this.__queueInterval
 
                 // notify that we're open again
-                this.trigger(HeartBeatSocket.EVENT_CONNECTION_OPENED)
+                this.trigger(HeartbeatSocket.EVENT_CONNECTION_OPENED)
 
                 // if we have a queue, we need to start sending it
                 if (this.__queue.length > 0) {
@@ -125,17 +133,15 @@ class HeartBeatSocket extends Observable {
         delete this.__queueInterval
 
         this.__socket.close()
-        this.trigger(HeartBeatSocket.EVENT_CONNECTION_CLOSED)
+        this.trigger(HeartbeatSocket.EVENT_CONNECTION_CLOSED)
     }
 }
 
-HeartBeatSocket.EVENT_MESSAGE_SENT = 'message-sent' // data message payload
-HeartBeatSocket.EVENT_MESSAGE_RECEIVED = 'message-received' // data message payload
-HeartBeatSocket.EVENT_CONNECTION_OPENED = 'connection-opened' // no payload
-HeartBeatSocket.EVENT_CONNECTION_CLOSED = 'connection-closed' // no payload
-HeartBeatSocket.EVENT_CONNECTION_ERROR = 'connection-error' // error payload
-
-HeartBeatSocket.TYPE_HEARTBEAT = 'heartbeat'
+HeartbeatSocket.EVENT_MESSAGE_SENT = 'HeartbeatSocket:message-sent' // data message payload
+HeartbeatSocket.EVENT_MESSAGE_RECEIVED = 'HeartbeatSocket:message-received' // data message payload
+HeartbeatSocket.EVENT_CONNECTION_OPENED = 'HeartbeatSocket:connection-opened' // no payload
+HeartbeatSocket.EVENT_CONNECTION_CLOSED = 'HeartbeatSocket:connection-closed' // no payload
+HeartbeatSocket.EVENT_CONNECTION_ERROR = 'HeartbeatSocket:connection-error' // error payload
 
 // ----------------------------------------------------------------------------------------
 
@@ -175,6 +181,6 @@ class HeartbeatConnectionError extends Error {}
 // ----------------------------------------------------------------------------------------
 
 
-HeartBeatSocket.HeartbeatConnectionError = HeartbeatConnectionError
-HeartBeatSocket.DataMessage = DataMessage
-module.exports = HeartBeatSocket
+HeartbeatSocket.HeartbeatConnectionError = HeartbeatConnectionError
+HeartbeatSocket.DataMessage = DataMessage
+module.exports = HeartbeatSocket

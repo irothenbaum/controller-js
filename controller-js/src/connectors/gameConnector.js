@@ -1,12 +1,14 @@
 const HeartbeatSocket = require('../heartbeatSocket')
 const SimpleObservable = require('../simpleObservable')
-const {Types, Event, ButtonPressEvent} = require('../events')
+const {Types, ButtonPressEvent, ConnectionReadyEvent, ConnectionWaitingEvent} = require('../events')
 
-const { DataMessage, HeartbeatConnectionError } = HeartbeatSocket
+const { DataMessage } = HeartbeatSocket
 
 class GameConnector extends SimpleObservable {
     constructor() {
         super()
+
+        this.__handleDataMessage = this.__handleDataMessage.bind(this)
     }
 
     /**
@@ -16,12 +18,18 @@ class GameConnector extends SimpleObservable {
      */
     async init(endpoint, code) {
         this.close()
-        this.__connection = new HeartbeatSocket(endpoint)
+        this.__connection = new HeartbeatSocket(endpoint, Types.CONNECTION.HEARTBEAT)
         this.__connection.on(HeartbeatSocket.EVENT_MESSAGE_RECEIVED, this.__handleDataMessage)
-        this.__connection.send(Types.CONNECTION.REQUEST, {
+        this.__connection.on(HeartbeatSocket.EVENT_CONNECTION_ERROR, error => {
+            console.error(error)
+        })
+        this.__connection.on(HeartbeatSocket.EVENT_CONNECTION_CLOSED, () => {
+            console.log("CONNECTION CLOSED")
+        })
+        this.__connection.send(Types.CONNECTION.INIT, {
             code: code
         })
-        this.trigger(Types.CONNECTION.REQUEST)
+        this.trigger(Types.CONNECTION.INIT)
     }
 
     async close() {
@@ -41,16 +49,31 @@ class GameConnector extends SimpleObservable {
         // build the correct event object given the type
         switch (dataMessage.type) {
             case Types.GAME.BUTTON.PRESS:
-                event = ButtonPressEvent(dataMessage.payload.code)
-                event.timestamp = dataMessage.payload.timestamp
+                event = new ButtonPressEvent(dataMessage.payload.buttonCode)
+                break
+
+            case Types.CONNECTION.WAITING:
+                event = new ConnectionWaitingEvent(dataMessage.payload.connectCode)
+                break
+
+            case Types.CONNECTION.HEARTBEAT:
+                // do nothing
+                break
+
+            case Types.CONNECTION.READY:
+                event = new ConnectionReadyEvent()
                 break
 
             default:
-                throw new Error("Unrecognized Event Type")
+                console.log("Unrecognized Event Type: " + dataMessage.type)
         }
 
-        // broadcast the event
-        this.trigger(dataMessage.type, event)
+        if (event) {
+            event.timestamp = dataMessage.payload.timestamp
+            // broadcast the event
+            this.trigger(dataMessage.type, event)
+        }
+
     }
 }
 

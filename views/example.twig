@@ -1,5 +1,16 @@
 {% extends "layouts/default.twig" %}
 
+{% block scripts %}
+    {{ parent() }}
+    <script src="{{ site.static_dir }}js/controller-js/index.js"></script>
+    <script src="{{ site.static_dir }}js/example.js"></script>
+{% endblock %}
+
 {% block content %}
-    <h1>Example Game</h1>
+    <h1>Example</h1>
+
+    <div id="game-container">
+        <div id="code-label"></div>
+        <textarea id="log"></textarea>
+    </div>
 {% endblock %}

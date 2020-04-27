@@ -22,16 +22,19 @@ router.get('/play/:code', function(req, res, next) {
     })
 });
 
+router.get('/debug', GameController.debugSockets)
+
 // ---------------------------------------
 
 /**
  * WEB SOCKET: game connect
  */
-router.ws('/game/init/:code?', asyncHandler(GameController.socketGameInit))
+router.ws('/game/init/', GameController.socketGameInit)
+router.ws('/game/init/:code', GameController.socketGameInit)
 
 /**
  * WEB SOCKET: controller connect
  */
-router.ws('/game/:code/connect', asyncHandler(GameController.socketConnectController))
+router.ws('/game/:code/connect', GameController.socketConnectController)
 
 module.exports = router;

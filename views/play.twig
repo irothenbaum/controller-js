@@ -6,10 +6,10 @@
 
 {% block scripts %}
     {{ parent() }}
-    <script crossorigin src="{{ site.static_dir }}js/controller-js/index.js"></script>
+    <script src="{{ site.static_dir }}js/controller-js/index.js"></script>
     <script type="text/javascript">
         (function() {
-            window.InitBasicControllerApp('controller-app', '{{ connectCode|raw }}');
+            window.ControllerJS.InitBasicControllerApp('controller-app', '{{ connectCode|raw }}');
         })();
     </script>
     <script type="text/javascript" src="{{ site.static_dir }}js/play.js"></script>

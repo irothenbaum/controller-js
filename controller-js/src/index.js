@@ -2,20 +2,34 @@ const GameConnector = require('./connectors/gameConnector')
 const ControllerConnector = require('./connectors/controllerConnector')
 const EVENTS = require('./events')
 const Controllers = require('./controllers')
+const HeartbeatSocket = require('./heartbeatSocket')
 
 const React = require('react')
 const ReactDOM = require('react-dom')
 
+/**
+ * @param {string} elementId
+ * @param {string} connectCode
+ * @constructor
+ */
 function InitBasicControllerApp(elementId, connectCode) {
-    ReactDOM.render(<Controllers.DefaultGamepad connectCode={connectCode} />, document.getElementById(elementId))
+    const endpoint = window.location.origin.replace('http', 'ws') + `/game/${connectCode}/connect`
+
+    ReactDOM.render(<Controllers.DefaultGamepad endpoint={endpoint} connectCode={connectCode} />, document.getElementById(elementId))
 }
 
-module.exports = {
+const ControllerJS = {
     GameConnector,
     ControllerConnector,
     Controllers,
     EVENTS,
+    HeartbeatSocket,
+    InitBasicControllerApp,
 }
 
+module.exports = ControllerJS
+
 // probably not the best way to expose this function in the browser...
-window.InitBasicControllerApp = InitBasicControllerApp
+if (window) {
+    window.ControllerJS = ControllerJS
+}
