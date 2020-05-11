@@ -1,6 +1,6 @@
 const HeartbeatSocket = require('../heartbeatSocket')
 const SimpleObservable = require('../simpleObservable')
-const {Types, ButtonPressEvent} = require('../events')
+const {Types, ButtonPressDownEvent, ButtonPressUpEvent} = require('../events')
 
 const { DataMessage } = HeartbeatSocket
 
@@ -49,20 +49,20 @@ class ControllerConnector extends SimpleObservable {
         this.trigger(dataMessage.type)
     }
 
-    sendButtonPressDown() {
-
+    /**
+     * @param {string} buttonCode
+     */
+    sendButtonPressDown(buttonCode) {
+        let eventInstance = new ButtonPressDownEvent(buttonCode)
+        this.__connection.send(eventInstance.type, eventInstance)
     }
 
     /**
      * @param {string} buttonCode
      */
-    sendButtonPress(buttonCode) {
-        let eventInstance = new ButtonPressEvent(buttonCode)
-        this.__connection.send(Types.GAME.BUTTON.PRESS_UP, eventInstance)
-    }
-
-    sendButtonPressUp() {
-
+    sendButtonPressUp(buttonCode) {
+        let eventInstance = new ButtonPressUpEvent(buttonCode)
+        this.__connection.send(eventInstance.type, eventInstance)
     }
 
     sendJoystickMoveStart() {

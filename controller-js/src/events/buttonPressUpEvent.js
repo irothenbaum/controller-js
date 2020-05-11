@@ -1,11 +1,11 @@
 const Event = require('./event')
 const Types = require('./types')
 
-class ButtonPressEvent extends Event {
+class ButtonPressUpEvent extends Event {
     constructor(buttonCode) {
-        super(Types.GAME.BUTTON.PRESS)
+        super(Types.GAME.BUTTON.PRESS_UP)
         this.buttonCode = buttonCode
     }
 }
 
-module.exports = ButtonPressEvent
+module.exports = ButtonPressUpEvent

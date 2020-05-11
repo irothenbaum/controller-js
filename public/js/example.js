@@ -19,7 +19,7 @@
             $log.val("Ready!");
         });
 
-        gameConnector.on(ControllerJS.EVENTS.Types.GAME.BUTTON.PRESS, function(e) {
+        gameConnector.on(ControllerJS.EVENTS.Types.GAME.BUTTON.PRESS_DOWN, function(e) {
             console.log(e)
             $log.val($log.val() + '\n' + e.buttonCode);
         })

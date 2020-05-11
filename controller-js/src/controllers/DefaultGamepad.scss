@@ -1,0 +1,30 @@
+@import "../../../sass/variables";
+@import "../../../sass/mixins";
+
+$buttonSize : 60px;
+
+#buttons-container {
+  $buttonSize : 60px;
+
+  .button-component {
+    height: $buttonSize;
+    width: $buttonSize;
+
+    background-color: $grey6;
+    border-top: 2px solid $sunbeam;
+    border-bottom: 2px solid $shadow;
+    border-radius: 50%;
+    color: $white;
+
+    &.is-down {
+      border-top-color: $shadow;
+      border-bottom-color: $sunbeam;
+      color: $grey3;
+    }
+
+    &.red { background-color: $red; }
+    &.green { background-color: $green; }
+    &.blue { background-color: $blue; }
+    &.orange { background-color: $orange; }
+  }
+}

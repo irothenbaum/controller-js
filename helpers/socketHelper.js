@@ -2,6 +2,27 @@ const socketServer = require('../socketServerSingleton')
 const DataMessage = require('../controller-js/src/heartbeatSocket').DataMessage
 const Types = require('../controller-js/src/events/types')
 
+class GameMeta {
+    constructor(code, role) {
+        this.code = code;
+        this.role = role;
+    }
+
+    /**
+     * @param {GameMeta} meta
+     */
+    setOther(meta) {
+        this._other = meta
+    }
+
+    /**
+     * @returns {GameMeta}
+     */
+    getOther() {
+        return this._other
+    }
+}
+
 const SocketHelper = {
 
     SOCKET_OPEN: 1,
@@ -22,9 +43,7 @@ const SocketHelper = {
      * @returns {Array<WebSocket>}
      */
     getActiveSocketByCode(code, role) {
-        console.log("CHECKING " + code + ' ' + role)
         return SocketHelper.getClients().find(s =>  {
-            console.log(s._meta, s.readyState)
             return s.readyState === SocketHelper.SOCKET_OPEN
                 && s._meta
                 && s._meta.code === code
@@ -38,10 +57,7 @@ const SocketHelper = {
      * @param {string} role
      */
     markSocketWithCode(socket, code, role) {
-        socket._meta = {
-            code: code,
-            role: role
-        }
+        socket._meta = new GameMeta(code, role)
     },
 
     /**
@@ -58,7 +74,7 @@ const SocketHelper = {
 
                 default:
                     // everything else, we forward to the "other"
-                    let otherSocket = SocketHelper.getSocketFromOther(socket._meta.other)
+                    let otherSocket = SocketHelper.getSocketFromGameMeta(socket._meta.getOther())
                     if (otherSocket) {
                         SocketHelper.pushToSocket(otherSocket, data)
                     }
@@ -68,19 +84,14 @@ const SocketHelper = {
     },
 
     /**
-     * @param {*} other
+     * @param {GameMeta} other
      * @returns {WebSocket | null}
      */
-    getSocketFromOther(other) {
+    getSocketFromGameMeta(other) {
+        if (!other || !other.code || !other.role) {
+            return null
+        }
         return SocketHelper.getActiveSocketByCode(other.code, other.role)
-    },
-
-    /**
-     * @param {WebSocket} socket
-     * @returns {*}
-     */
-    getOtherFromSocket(socket) {
-        return socket._meta
     },
 
     /**
@@ -88,8 +99,8 @@ const SocketHelper = {
      * @param {WebSocket} socket2
      */
     markSocketsAsConnected(socket1, socket2) {
-        socket1._meta.other = SocketHelper.getOtherFromSocket(socket2)
-        socket2._meta.other = SocketHelper.getOtherFromSocket(socket1)
+        socket1._meta.setOther(socket2._meta)
+        socket2._meta.setOther(socket1._meta)
     },
 
     /**
@@ -103,5 +114,7 @@ const SocketHelper = {
         }
     }
 }
+
+SocketHelper.GameMeta = GameMeta
 
 module.exports = SocketHelper

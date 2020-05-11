@@ -3,6 +3,7 @@ const React = require('react')
 const PropTypes = require('prop-types')
 const ControllerConnector = require('../connectors/controllerConnector')
 const Events = require('../events')
+const ButtonComponent = require('./ButtonComponent')
 
 class DefaultGamepad extends React.Component {
     constructor(props) {
@@ -10,8 +11,11 @@ class DefaultGamepad extends React.Component {
 
         this.state = {
             isReady: false,
-            handleConnectionReady: this.handleConnectionReady.bind(this)
+            handleConnectionReady: this.handleConnectionReady.bind(this),
         }
+
+        this.onDown = this.onDown.bind(this)
+        this.onUp = this.onUp.bind(this)
     }
 
     componentDidMount() {
@@ -47,10 +51,36 @@ class DefaultGamepad extends React.Component {
         })
     }
 
+    onDown(buttonCode) {
+        this.state.connector.sendButtonPressDown(buttonCode)
+    }
+
+    onUp(buttonCode) {
+        this.state.connector.sendButtonPressUp(buttonCode)
+    }
+
     render() {
         return (
             <div>
-                {this.state.isReady ? "READY!" : "connecting..."}
+                <div className="status">
+                    {this.state.isReady ? "READY!" : "connecting..."}
+                </div>
+
+                <div id="buttons-container">
+                    <ButtonComponent className={'red'}
+                                     onDown={() => this.onDown('A')}
+                                     onUp={() => this.onUp('A')}
+                    >
+                        A
+                    </ButtonComponent>
+                    <ButtonComponent
+                        className={'blue'}
+                        onDown={() => this.onDown('B')}
+                        onUp={() => this.onUp('B')}
+                    >
+                        B
+                    </ButtonComponent>
+                </div>
             </div>
         )
     }

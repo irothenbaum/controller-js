@@ -1,6 +1,6 @@
 const HeartbeatSocket = require('../heartbeatSocket')
 const SimpleObservable = require('../simpleObservable')
-const {Types, ButtonPressEvent, ConnectionReadyEvent, ConnectionWaitingEvent} = require('../events')
+const {Types, ButtonPressDownEvent, ConnectionReadyEvent, ConnectionWaitingEvent} = require('../events')
 
 const { DataMessage } = HeartbeatSocket
 
@@ -48,8 +48,8 @@ class GameConnector extends SimpleObservable {
 
         // build the correct event object given the type
         switch (dataMessage.type) {
-            case Types.GAME.BUTTON.PRESS:
-                event = new ButtonPressEvent(dataMessage.payload.buttonCode)
+            case Types.GAME.BUTTON.PRESS_DOWN:
+                event = new ButtonPressDownEvent(dataMessage.payload.buttonCode)
                 break
 
             case Types.CONNECTION.WAITING:
@@ -69,7 +69,7 @@ class GameConnector extends SimpleObservable {
         }
 
         if (event) {
-            event.timestamp = dataMessage.payload.timestamp
+            event.timestamp = dataMessage.timestamp_sent
             // broadcast the event
             this.trigger(dataMessage.type, event)
         }
