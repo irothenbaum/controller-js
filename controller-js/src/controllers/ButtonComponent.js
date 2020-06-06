@@ -8,6 +8,9 @@ class ButtonComponent extends React.Component {
         this.state = {
             isDown: false
         }
+
+        this.handleDown = this.handleDown.bind(this)
+        this.handleUp = this.handleUp.bind(this)
     }
 
     handleDown() {
@@ -40,7 +43,7 @@ class ButtonComponent extends React.Component {
                 ].join(' ')}
                 onTouchStart={this.handleDown}
                 onTouchEnd={this.handleUp}
-                onClick={this.handleDown}
+                // onClick={this.handleDown}
             >
                 {this.props.children}
             </div>
@@ -55,6 +58,6 @@ ButtonComponent.propTypes = {
 
 ButtonComponent.CLASS = 'button-component'
 ButtonComponent.CLASS_DOWN = 'is-down'
-ButtonComponent.CLASS_UP = 'is-down'
+ButtonComponent.CLASS_UP = 'is-up'
 
 module.exports = ButtonComponent

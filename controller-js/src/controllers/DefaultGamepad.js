@@ -5,6 +5,13 @@ const ControllerConnector = require('../connectors/controllerConnector')
 const Events = require('../events')
 const ButtonComponent = require('./ButtonComponent')
 
+const BUTTONS_AND_COLORS = {
+    X: 'blue',
+    Y: 'green',
+    A: 'red',
+    B: 'orange'
+}
+
 class DefaultGamepad extends React.Component {
     constructor(props) {
         super(props)
@@ -67,19 +74,16 @@ class DefaultGamepad extends React.Component {
                 </div>
 
                 <div id="buttons-container">
-                    <ButtonComponent className={'red'}
-                                     onDown={() => this.onDown('A')}
-                                     onUp={() => this.onUp('A')}
-                    >
-                        A
-                    </ButtonComponent>
-                    <ButtonComponent
-                        className={'blue'}
-                        onDown={() => this.onDown('B')}
-                        onUp={() => this.onUp('B')}
-                    >
-                        B
-                    </ButtonComponent>
+                    <div id="buttons-container-inner">
+                        {Object.entries(BUTTONS_AND_COLORS).map(tuple => (
+                            <ButtonComponent className={tuple[1]}
+                                             onDown={() => this.onDown(tuple[0])}
+                                             onUp={() => this.onUp(tuple[0])}
+                            >
+                                {tuple[0]}
+                            </ButtonComponent>
+                        ))}
+                    </div>
                 </div>
             </div>
         )

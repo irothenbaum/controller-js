@@ -76,7 +76,7 @@ class GameController {
     }
 
     static debugSockets(req, res, next) {
-        res.json(SocketHelper.getClients())
+        res.json(SocketHelper.getClients().map(s => s._meta))
     }
 }
 
@@ -88,7 +88,8 @@ module.exports = GameController
  */
 function getRandomString(count) {
     let result = ''
-    let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+    // caps only?
+    let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'//abcdefghijklmnopqrstuvwxyz0123456789'
     let charactersLength = characters.length
     for ( let i = 0; i < count; i++ ) {
         result += characters.charAt(Math.floor(Math.random() * charactersLength));

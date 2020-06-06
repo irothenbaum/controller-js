@@ -12,14 +12,14 @@ class GameMeta {
      * @param {GameMeta} meta
      */
     setOther(meta) {
-        this._other = meta
+        this._otherRole = meta.role
     }
 
     /**
      * @returns {GameMeta}
      */
     getOther() {
-        return this._other
+        return new GameMeta(this.code, this._otherRole)
     }
 }
 
