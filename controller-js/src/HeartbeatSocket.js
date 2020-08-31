@@ -1,4 +1,4 @@
-const Observable = require('./simpleObservable')
+const Observable = require('./SimpleObservable')
 
 // 50 milliseconds
 const QUEUE_CHECK_TIMEOUT = 50

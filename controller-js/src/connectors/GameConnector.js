@@ -1,6 +1,16 @@
-const HeartbeatSocket = require('../heartbeatSocket')
-const SimpleObservable = require('../simpleObservable')
-const {Types, ButtonPressDownEvent, ConnectionReadyEvent, ConnectionWaitingEvent} = require('../Events')
+const HeartbeatSocket = require('../HeartbeatSocket')
+const SimpleObservable = require('../SimpleObservable')
+const {
+    ButtonPressDownEvent,
+    ButtonPressUpEvent,
+    ConnectionReadyEvent,
+    ConnectionInitEvent,
+    ConnectionWaitingEvent,
+    JoystickMoveStartEvent,
+    JoystickMoveEvent,
+    JoystickMoveEndEvent,
+    Types,
+} = require('../Events')
 
 const { DataMessage } = HeartbeatSocket
 
@@ -26,10 +36,9 @@ class GameConnector extends SimpleObservable {
         this.__connection.on(HeartbeatSocket.EVENT_CONNECTION_CLOSED, () => {
             console.log("CONNECTION CLOSED")
         })
-        this.__connection.send(Types.CONNECTION.INIT, {
-            code: code
-        })
-        this.trigger(Types.CONNECTION.INIT)
+        const initEvent = new ConnectionInitEvent(code)
+        this.__connection.send(Types.CONNECTION.INIT, initEvent)
+        this.trigger(Types.CONNECTION.INIT, initEvent)
     }
 
     async close() {
@@ -52,8 +61,28 @@ class GameConnector extends SimpleObservable {
                 event = new ButtonPressDownEvent(dataMessage.payload.buttonCode)
                 break
 
+            case Types.GAME.BUTTON.PRESS_UP:
+                event = new ButtonPressUpEvent(dataMessage.payload.buttonCode)
+                break
+
+            case Types.GAME.JOYSTICK.MOVE_START:
+                event = new JoystickMoveStartEvent(dataMessage.payload.joystickCode)
+                break
+
+            case Types.GAME.JOYSTICK.MOVE_END:
+                event = new JoystickMoveEndEvent(dataMessage.payload.joystickCode)
+                break
+
+            case Types.GAME.JOYSTICK.MOVE:
+                event = new JoystickMoveEvent(dataMessage.payload.joystickCode, dataMessage.payload.direction, dataMessage.payload.magnitude)
+                break
+
             case Types.CONNECTION.WAITING:
                 event = new ConnectionWaitingEvent(dataMessage.payload.connectCode)
+                break
+
+            case Types.CONNECTION.INIT:
+                event = new ConnectionInitEvent(dataMessage.payload.connectCode)
                 break
 
             case Types.CONNECTION.HEARTBEAT:

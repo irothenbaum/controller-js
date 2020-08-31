@@ -1,6 +1,7 @@
 {
   "domain" : "example.com",
   "protocol": "http | https",
+  "debug": false,
 
   "ssl": {
     "key": "/path/to/key.pem",

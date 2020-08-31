@@ -1,6 +1,14 @@
 const HeartbeatSocket = require('../HeartbeatSocket')
 const SimpleObservable = require('../SimpleObservable')
-const {Types, ButtonPressDownEvent, ButtonPressUpEvent} = require('../Events')
+const {
+    Types,
+    ButtonPressDownEvent,
+    ButtonPressUpEvent,
+    ConnectionInitEvent,
+    JoystickMoveEndEvent,
+    JoystickMoveEvent,
+    JoystickMoveStartEvent
+} = require('../Events')
 
 const { DataMessage } = HeartbeatSocket
 
@@ -26,10 +34,9 @@ class ControllerConnector extends SimpleObservable {
         this.__connection.on(HeartbeatSocket.EVENT_CONNECTION_CLOSED, () => {
             console.log("CONNECTION CLOSED")
         })
-        this.__connection.send(Types.CONNECTION.INIT, {
-            code: code
-        })
-        this.trigger(Types.CONNECTION.INIT)
+        const initEvent = new ConnectionInitEvent(code)
+        this.__connection.send(Types.CONNECTION.INIT, initEvent)
+        this.trigger(Types.CONNECTION.INIT, initEvent)
     }
 
     async close() {
@@ -44,9 +51,9 @@ class ControllerConnector extends SimpleObservable {
      * @param {DataMessage} dataMessage
      */
     __handleDataMessage(dataMessage) {
-        // could format an event payload given the datamessage type and payload
+        // could format an event payload given the data message type and payload
 
-        this.trigger(dataMessage.type)
+        this.trigger(dataMessage.type, dataMessage.payload)
     }
 
     /**
@@ -65,16 +72,30 @@ class ControllerConnector extends SimpleObservable {
         this.__connection.send(eventInstance.type, eventInstance)
     }
 
-    sendJoystickMoveStart() {
-
+    /**
+     * @param {string} joystickCode
+     */
+    sendJoystickMoveStart(joystickCode) {
+        let eventInstance = new JoystickMoveStartEvent(joystickCode)
+        this.__connection.send(eventInstance.type, eventInstance)
     }
 
-    sendJoystickMoveStop() {
-
+    /**
+     * @param {string} joystickCode
+     */
+    sendJoystickMoveEnd(joystickCode) {
+        let eventInstance = new JoystickMoveEndEvent(joystickCode)
+        this.__connection.send(eventInstance.type, eventInstance)
     }
 
-    sendJoystickMove() {
-
+    /**
+     * @param {string} joystickCode
+     * @param {number} direction
+     * @param {number} magnitude
+     */
+    sendJoystickMove(joystickCode, direction, magnitude) {
+        let eventInstance = new JoystickMoveEvent(joystickCode, direction, magnitude)
+        this.__connection.send(eventInstance.type, eventInstance)
     }
 }
 

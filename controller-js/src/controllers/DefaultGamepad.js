@@ -21,9 +21,6 @@ class DefaultGamepad extends React.Component {
             isReady: false,
             handleConnectionReady: this.handleConnectionReady.bind(this),
         }
-
-        this.onDown = this.onDown.bind(this)
-        this.onUp = this.onUp.bind(this)
     }
 
     componentDidMount() {
@@ -59,16 +56,40 @@ class DefaultGamepad extends React.Component {
         })
     }
 
+    /**
+     * @param {string} buttonCode
+     */
     onDown(buttonCode) {
         this.state.connector.sendButtonPressDown(buttonCode)
     }
 
+    /**
+     * @param {string} buttonCode
+     */
     onUp(buttonCode) {
         this.state.connector.sendButtonPressUp(buttonCode)
     }
 
-    onMove() {
-        this.state.connector.sendJoystickMove()
+    /**
+     * @param {string} joystickCode
+     */
+    onMoveStart(joystickCode) {
+        this.state.connector.sendJoystickMoveStart(joystickCode)
+    }
+
+    /**
+     * @param {string} joystickCode
+     * @param {JoystickComponent.ArticulationVector} vector
+     */
+    onMove(joystickCode, vector) {
+        this.state.connector.sendJoystickMove(joystickCode, vector.direction, vector.magnitude)
+    }
+
+    /**
+     * @param {string} joystickCode
+     */
+    onMoveEnd(joystickCode) {
+        this.state.connector.sendJoystickMoveEnd(joystickCode)
     }
 
     render() {
@@ -93,9 +114,11 @@ class DefaultGamepad extends React.Component {
 
                 <div id="joystick-container">
                     <div id="joystick-container">
-                        <JoystickComponent onMove={() => this.onMove()}>
-
-                        </JoystickComponent>
+                        <JoystickComponent
+                            onMove={(vector) => this.onMove('main', vector)}
+                            onStart={() => this.onMoveStart('main')}
+                            onEnd={() => this.onMoveEnd('main')}
+                        />
                     </div>
                 </div>
             </div>

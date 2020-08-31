@@ -1,6 +1,6 @@
 const GameConnector = require('./connectors/GameConnector')
-const ControllerConnector = require('./connectors/controllerConnector')
-const EVENTS = require('./Events')
+const ControllerConnector = require('./connectors/ControllerConnector')
+const Events = require('./Events')
 const Controllers = require('./controllers')
 const HeartbeatSocket = require('./HeartbeatSocket')
 
@@ -22,7 +22,7 @@ const ControllerJS = {
     GameConnector,
     ControllerConnector,
     Controllers,
-    EVENTS,
+    Events,
     HeartbeatSocket,
     InitBasicControllerApp,
 }

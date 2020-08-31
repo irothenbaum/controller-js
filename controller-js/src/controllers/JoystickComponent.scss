@@ -1,9 +1,52 @@
 @import "../../../sass/variables";
 @import "../../../sass/mixins";
 
-$trackSize: 200px;
+$trackSize: 100px;
 $knobSize: 50px;
+$halfKnobSize: $knobSize / 2;
+$fontSize: 20px;
 
 .joystick-component {
+  box-sizing: border-box;
+  height: $trackSize;
+  width: $trackSize;
+  padding: 0;
+  margin: 0;
+  border-radius: 50%;
+  background-color: $shadow;
+  position: relative;
 
+  .joystick-knob {
+    box-sizing: border-box;
+    height: $knobSize;
+    width: $knobSize;
+    padding: 0;
+    margin:0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -$halfKnobSize;
+    margin-left: -$halfKnobSize;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+    background-color: $grey8;
+    color: $white;
+    font-size: $fontSize;
+
+    &:after {
+      content: '';
+      height: 100%;
+      width: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      border-radius: 50%;
+      z-index: 2;
+      background: radial-gradient(ellipse at center, $sunbeam 50%, transparent 80%, $shadow-dk-2);
+    }
+  }
 }
