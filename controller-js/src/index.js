@@ -1,8 +1,8 @@
-const GameConnector = require('./connectors/gameConnector')
+const GameConnector = require('./connectors/GameConnector')
 const ControllerConnector = require('./connectors/controllerConnector')
-const EVENTS = require('./events')
+const EVENTS = require('./Events')
 const Controllers = require('./controllers')
-const HeartbeatSocket = require('./heartbeatSocket')
+const HeartbeatSocket = require('./HeartbeatSocket')
 
 const React = require('react')
 const ReactDOM = require('react-dom')

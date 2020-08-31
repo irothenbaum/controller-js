@@ -1,9 +1,10 @@
 const css = require('./DefaultGamepad.scss')
 const React = require('react')
 const PropTypes = require('prop-types')
-const ControllerConnector = require('../connectors/controllerConnector')
-const Events = require('../events')
+const ControllerConnector = require('../connectors/ControllerConnector')
+const Events = require('../Events')
 const ButtonComponent = require('./ButtonComponent')
+const JoystickComponent = require('./JoystickComponent')
 
 const BUTTONS_AND_COLORS = {
     X: 'blue',
@@ -66,6 +67,10 @@ class DefaultGamepad extends React.Component {
         this.state.connector.sendButtonPressUp(buttonCode)
     }
 
+    onMove() {
+        this.state.connector.sendJoystickMove()
+    }
+
     render() {
         return (
             <div>
@@ -83,6 +88,14 @@ class DefaultGamepad extends React.Component {
                                 {tuple[0]}
                             </ButtonComponent>
                         ))}
+                    </div>
+                </div>
+
+                <div id="joystick-container">
+                    <div id="joystick-container">
+                        <JoystickComponent onMove={() => this.onMove()}>
+
+                        </JoystickComponent>
                     </div>
                 </div>
             </div>

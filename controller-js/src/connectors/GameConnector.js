@@ -1,10 +1,10 @@
 const HeartbeatSocket = require('../heartbeatSocket')
 const SimpleObservable = require('../simpleObservable')
-const {Types, ButtonPressDownEvent, ButtonPressUpEvent} = require('../events')
+const {Types, ButtonPressDownEvent, ConnectionReadyEvent, ConnectionWaitingEvent} = require('../Events')
 
 const { DataMessage } = HeartbeatSocket
 
-class ControllerConnector extends SimpleObservable {
+class GameConnector extends SimpleObservable {
     constructor() {
         super()
 
@@ -13,7 +13,7 @@ class ControllerConnector extends SimpleObservable {
 
     /**
      * @param {string} endpoint
-     * @param {string} code
+     * @param {string?} code
      * @returns {Promise<void>}
      */
     async init(endpoint, code) {
@@ -44,38 +44,37 @@ class ControllerConnector extends SimpleObservable {
      * @param {DataMessage} dataMessage
      */
     __handleDataMessage(dataMessage) {
-        // could format an event payload given the datamessage type and payload
+        let event
 
-        this.trigger(dataMessage.type)
-    }
+        // build the correct event object given the type
+        switch (dataMessage.type) {
+            case Types.GAME.BUTTON.PRESS_DOWN:
+                event = new ButtonPressDownEvent(dataMessage.payload.buttonCode)
+                break
 
-    /**
-     * @param {string} buttonCode
-     */
-    sendButtonPressDown(buttonCode) {
-        let eventInstance = new ButtonPressDownEvent(buttonCode)
-        this.__connection.send(eventInstance.type, eventInstance)
-    }
+            case Types.CONNECTION.WAITING:
+                event = new ConnectionWaitingEvent(dataMessage.payload.connectCode)
+                break
 
-    /**
-     * @param {string} buttonCode
-     */
-    sendButtonPressUp(buttonCode) {
-        let eventInstance = new ButtonPressUpEvent(buttonCode)
-        this.__connection.send(eventInstance.type, eventInstance)
-    }
+            case Types.CONNECTION.HEARTBEAT:
+                // do nothing
+                break
 
-    sendJoystickMoveStart() {
+            case Types.CONNECTION.READY:
+                event = new ConnectionReadyEvent()
+                break
 
-    }
+            default:
+                console.log("Unrecognized Event Type: " + dataMessage.type)
+        }
 
-    sendJoystickMoveStop() {
-
-    }
-
-    sendJoystickMove() {
+        if (event) {
+            event.timestamp = dataMessage.timestamp_sent
+            // broadcast the event
+            this.trigger(dataMessage.type, event)
+        }
 
     }
 }
 
-module.exports = ControllerConnector
+module.exports = GameConnector

@@ -1,7 +1,7 @@
 @import "../../../sass/variables";
 @import "../../../sass/mixins";
 
-$buttonSize : 30px;
+$buttonSize: 30px;
 $fontSize: 20px;
 
 #buttons-container {
@@ -20,47 +20,9 @@ $fontSize: 20px;
   }
 
   .button-component {
-    box-sizing: border-box;
     height: $buttonSize;
     width: $buttonSize;
-    padding: 0;
-    margin: 0;
-
     position: absolute;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border-radius: 50%;
-
-    background-color: $grey6;
-    color: $white;
-    font-size: $fontSize;
-
-    &:before, &:after {
-      content: '';
-      height: 100%;
-      width: 100%;
-      position: absolute;
-      top: 0;
-      left: 0;
-      z-index: 1;
-      border-radius: 50%;
-    }
-
-    &:before {
-      background: linear-gradient(to bottom,  $shadow 0%, $sunbeam 50%,transparent 51%,$sunbeam-lt-1 100%);
-      opacity: 0.8;
-    }
-
-    &:after {
-      z-index: 2;
-      background: radial-gradient(ellipse at center, transparent 60%, $shadow-dk-1 80%);
-    }
-
-    &.is-down:before {
-      background: radial-gradient(ellipse at center, $shadow-dk-1 40%, transparent 100%);
-    }
 
     &.red {
       background-color: $red;
@@ -82,5 +44,9 @@ $fontSize: 20px;
       bottom: 0;
       left: calc(50% - #{$buttonSize}/2);
     }
+  }
+
+  .joystick-component {
+
   }
 }

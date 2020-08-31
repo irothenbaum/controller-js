@@ -1,5 +1,5 @@
-const Event = require('./event')
-const Types = require('./types')
+const Event = require('./Event')
+const Types = require('./Types')
 
 class ConnectionReadyEvent extends Event {
     constructor() {

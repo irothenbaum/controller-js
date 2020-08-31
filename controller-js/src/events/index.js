@@ -1,9 +1,9 @@
-const Types = require('./types')
+const Types = require('./Types')
 const ButtonPressDownEvent = require('./buttonPressDownEvent')
 const ButtonPressUpEvent = require('./buttonPressUpEvent')
 const ConnectionReadyEvent = require('./connectionReadyEvent')
 const ConnectionWaitingEvent = require('./connectionWaitingEvent')
-const Event = require('./event')
+const Event = require('./Event')
 
 module.exports = {
     ButtonPressDownEvent,
