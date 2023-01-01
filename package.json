@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
-    "css-loader": "^3.5.3",
+    "css-loader": "^6.7.3",
     "debug": "~2.6.9",
     "express": "~4.16.1",
     "express-async-handler": "^1.1.4",
@@ -20,7 +20,7 @@
     "morgan": "~1.9.1",
     "node-sass": "^4.14.0",
     "prop-types": "^15.7.2",
-    "sass-loader": "^8.0.2",
+    "sass-loader": "^13.2.0",
     "serve-favicon": "^2.5.0",
     "style-loader": "^1.2.0",
     "twing": "^4.0.3",
@@ -30,11 +30,11 @@
     "@babel/core": "^7.9.0",
     "@babel/plugin-proposal-class-properties": "^7.8.3",
     "@babel/preset-react": "^7.9.4",
-    "babel-loader": "^8.1.0",
+    "babel-loader": "^8.3.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "webpack": "^4.42.1",
+    "webpack": "^5.75.0",
     "webpack-bundle-tracker": "^1.0.0-alpha.1",
-    "webpack-cli": "^3.3.11"
+    "webpack-cli": "^5.0.1"
   }
 }
